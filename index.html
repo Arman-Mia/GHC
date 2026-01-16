@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <link rel="icon" type="image/png" href="logo-removebg-preview.png">
+  
+  <title>Green House Cafe | Sagardighi</title>
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --primary-dark: #388E3C;
+      --dark: #2c2c2c;
+      --light: #f9fafb;
+      --gray: #6b7280;
+      --accent: #f59e0b;
+      --menu-bg: #ffffff;
+      --whatsapp: #25D366;
+      --nav-bg: rgba(0, 0, 0, 0.85); /* Black Glass */
+      --nav-text: #ffffff;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background: var(--light);
+      overflow-x: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ────────────────────────────────────────────────
+       PREMIUM DARK NAVIGATION
+    ──────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: var(--nav-bg); 
+      backdrop-filter: blur(15px); /* Stronger blur for premium feel */
+      -webkit-backdrop-filter: blur(15px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transition: all 0.4s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 80px; 
+      display: flex;
+      align-items: center;
+      justify-content: center; /* Center Logo */
+      position: relative;
+    }
+    
+    /* LOGO */
+    .logo {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1002;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .logo img {
+        max-height: 70px; 
+        width: auto;
+        /* Add a subtle white glow in case the logo has black text */
+        filter: drop-shadow(0 0 8px rgba(255,255,255,0.2)); 
+    }
+    .logo:hover {
+        transform: scale(1.1);
+    }
+
+    /* Toggle Button (White now) */
+    .nav-toggle {
+      position: absolute;
+      left: 20px;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: var(--nav-text); /* White */
+      padding: 10px;
+      z-index: 1002;
+      transition: all 0.3s;
+    }
+    .nav-toggle:hover { color: var(--primary); transform: rotate(90deg); }
+
+    /* Links (White Text) */
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      background: rgba(10, 10, 10, 0.98); /* Very dark mobile menu */
+      padding: 20px 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      animation: slideDown 0.4s ease-out;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--nav-text); /* White */
+      font-weight: 500;
+      padding: 15px 20px;
+      text-align: center;
+      transition: 0.3s;
+      letter-spacing: 0.5px;
+      position: relative;
+    }
+    
+    /* Glowing Underline Animation */
+    .nav-links a:not(.btn)::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 10px;
+      left: 50%;
+      background-color: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    .nav-links a:not(.btn):hover::after { width: 40px; }
+    .nav-links a:hover { color: var(--primary); text-shadow: 0 0 8px rgba(76,175,80,0.4); }
+    
+    .nav-links.active { display: flex; }
+
+    /* ────────────────────────────────────────────────
+       HERO SECTION (Cinematic Animations)
+    ──────────────────────────────────────────────── */
+    header {
+      position: relative;
+      color: white;
+      text-align: center;
+      padding: 180px 15px 120px;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Background with Slow Parallax/Zoom */
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
+                  url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=1500') center/cover no-repeat;
+      z-index: -1;
+      animation: slowZoom 25s infinite alternate ease-in-out;
+    }
+
+    /* Cinematic Text Entrance */
+    header h1 { 
+      font-size: 3.8rem; 
+      margin-bottom: 20px; 
+      line-height: 1.1;
+      animation: focusIn 1.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    }
+    
+    header p { 
+      font-size: 1.3rem; 
+      margin-bottom: 30px; 
+      max-width: 600px;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 0.8s forwards;
+    }
+    
+    .header-btns {
+      opacity: 0;
+      animation: fadeInUp 1s ease-out 1.2s forwards;
+    }
+
+    /* Shimmer Button Effect */
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 14px 35px;
+      margin: 10px 8px;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    /* The shine passing through */
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: 0.5s;
+      z-index: -1;
+    }
+    .btn:hover::before { left: 100%; }
+    .btn:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4); 
+    }
+
+    .btn-whatsapp { background: var(--whatsapp) !important; }
+    .btn-whatsapp:hover { background: #20b858 !important; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4); }
+
+    section { padding: 90px 20px; max-width: 1200px; margin: 0 auto; }
+    
+    h2 { 
+      text-align: center; font-size: 2.8rem; margin-bottom: 15px; color: var(--primary); 
+      font-weight: 700; letter-spacing: -1px;
+    }
+    
+    h3 {
+      color: var(--primary);
+      margin: 60px 0 30px;
+      font-size: 2rem;
+      text-align: center;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    section h3::after {
+        content: ''; display: block; width: 50px; height: 4px; background: var(--accent); margin: 10px auto 0;
+        border-radius: 2px;
+        transition: width 0.3s;
+    }
+    section h3:hover::after { width: 100px; }
+
+    /* Gallery - Floating Effect */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .gallery-grid img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 15px;
+        filter: grayscale(20%); /* Artistic touch */
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .gallery-grid img:hover { 
+      transform: scale(1.05); 
+      filter: grayscale(0%);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+
+    /* Cards with Glass Borders */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+      margin-top: 25px;
+    }
+    .menu-item {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px 25px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+      text-align: center;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .menu-item:hover { 
+      transform: translateY(-10px) scale(1.02); 
+      background: white;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border-color: var(--primary);
+    }
+    .menu-item h4 { font-size: 1.3rem; margin-bottom: 10px; color: var(--dark); font-weight: 700; }
+    .price { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-top: auto; }
+
+    /* Features */
+    .features { display: grid; grid-template-columns: 1fr; gap: 20px; text-align: center; }
+    .feature { 
+        background: white; padding: 40px 20px; border-radius: 20px; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.05); 
+        transition: 0.4s;
+    }
+    .feature:hover { transform: translateY(-10px); }
+    .feature i { transition: 0.4s; }
+    .feature:hover i { transform: scale(1.2) rotate(10deg); color: var(--accent) !important; }
+
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 25px; text-align: center; }
+    .contact-card { 
+        background: white; padding: 40px 25px; border-radius: 20px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+    }
+
+    footer { background: #111; color: white; text-align: center; padding: 60px 20px; }
+    footer h6 { margin-top: 15px; opacity: 0.5; font-weight: 300; letter-spacing: 2px; text-transform: uppercase;}
+
+    /* WhatsApp Pulse */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 65px;
+      height: 65px;
+      background: var(--whatsapp);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      text-decoration: none;
+      transition: all 0.3s;
+      animation: pulse 2s infinite;
+    }
+    .whatsapp-float:hover { background: #1da851; transform: scale(1.1); }
+
+    /* ────────────────────────────────────────────────
+       ANIMATION KEYFRAMES
+    ──────────────────────────────────────────────── */
+    
+    @keyframes slowZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    @keyframes focusIn {
+      0% {
+        filter: blur(12px);
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      100% {
+        filter: blur(0px);
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+      70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+
+    /* Scroll Reveal - Staggered */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1); /* Smooth eased transition */
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ────────────────────────────────────────────────
+       RESPONSIVE
+    ──────────────────────────────────────────────── */
+    @media (max-width: 480px) {
+        header h1 { font-size: 2.8rem; }
+        .btn { width: 100%; margin: 8px 0; }
+        .logo img { max-height: 55px; }
+        nav { height: 70px; }
+        .nav-links { top: 70px; }
+    }
+
+    @media (min-width: 768px) {
+      .nav-container { justify-content: space-between; } 
+      .logo img { max-height: 75px; } 
+      .logo { margin: 0; position: static; transform: none; }
+      
+      .nav-toggle { display: none; }
+      .nav-links {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        width: auto;
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+        border: none;
+        animation: none;
+      }
+      .nav-links a { padding: 0 15px; color: white; } /* Links definitely white on Desktop */
+      
+      .nav-links .btn-whatsapp { padding: 12px 25px; margin-left: 15px; } 
+
+      header { min-height: 80vh; }
+      header h1 { font-size: 5rem; }
+      
+      .btn { width: auto; margin: 10px 10px; } 
+
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+      .menu-grid { grid-template-columns: repeat(2, 1fr); }
+      .features { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+      .menu-grid { grid-template-columns: repeat(3, 1fr); }
+      .features { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (min-width: 1200px) {
+      .menu-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-container">
+      <div class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></div>
+      
+      <div class="logo">
+        <img src="logo-removebg-preview.png" alt="Green House Cafe Logo">
+      </div>
+      
+      <div class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#welcome">Welcome</a>
+        <a href="#menu">Gallery</a>
+        <a href="#full-menu">Menu</a>
+        <a href="#contact">Contact</a>
+        <a href="https://wa.me/+919883319801?text=Hello%20Green%20House%20Cafe!%20I%20want%20to%20place%20an%20order." class="btn btn-whatsapp">Order Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <a href="https://wa.me/+919883319801?text=Hello%20Green%20House%20Cafe!%20I%20want%20to%20place%20an%20order.%20My%20order%20is:" 
+     class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <header id="home">
+    <div class="rating">4.0 Rating · 46 Reviews</div>
+    <h1>Green House Cafe</h1>
+    <p>A cozy family restaurant in Sagardighi</p>
+    <p>Near Sagardighi Girls High School, West Bengal</p>
+    <div class="header-btns">
+        <a href="#full-menu" class="btn">View Menu</a>
+        <a href="https://wa.me/+919883319801?text=Hello%20Green%20House%20Cafe!%20I%20want%20to%20place%20an%20order." class="btn btn-whatsapp">Order Now</a>
+    </div>
+  </header>
+
+  <section id="welcome" class="reveal">
+    <h2>Welcome</h2>
+    <h2>Experience the Warmth</h2>
+    <p style="text-align:center; max-width:900px; margin:0 auto 40px; font-size:1.1rem; color:var(--gray);">
+      Delicious homestyle food, refreshing drinks, and genuine hospitality in the heart of Sagardighi.
+    </p>
+    <div class="features">
+      <div class="feature reveal">
+        <i class="fas fa-leaf" style="font-size:2rem; color:var(--primary); margin-bottom:15px;"></i>
+        <h3>Fresh Ingredients</h3><p>Locally sourced</p>
+      </div>
+      <div class="feature reveal">
+        <i class="fas fa-mug-hot" style="font-size:2rem; color:var(--primary); margin-bottom:15px;"></i>
+        <h3>Perfect Brews</h3><p>Aromatic chai & coffee</p>
+      </div>
+      <div class="feature reveal">
+        <i class="fas fa-utensils" style="font-size:2rem; color:var(--primary); margin-bottom:15px;"></i>
+        <h3>Family Recipes</h3><p>Traditional taste</p>
+      </div>
+      <div class="feature reveal">
+        <i class="fas fa-heart" style="font-size:2rem; color:var(--primary); margin-bottom:15px;"></i>
+        <h3>Made with Love</h3><p>Every dish special</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu" class="gallery reveal">
+    <h2>Gallery</h2>
+    <p style="text-align:center; color:var(--gray); margin-bottom:30px;">
+      (Add your own cafe photos here if you want – currently empty)
+    </p>
+    <div class="gallery-grid">
+      <img src="cafe Main.jpeg" alt="Cafe Look" class="reveal">
+      <img src="1.jpeg" alt="Cafe Look" class="reveal">
+      <img src="2.jpeg" alt="Cafe Look" class="reveal">
+      <img src="3.jpeg" alt="Cafe Look" class="reveal">
+      <img src="4.jpeg" alt="Cafe Look" class="reveal">
+      <img src="5.jpeg" alt="" class="reveal">
+      <img src="6.jpeg" alt="" class="reveal">
+      <img src="7.jpeg" alt="" class="reveal">
+      <img src="8.jpeg" alt="" class="reveal">
+      <img src="9.jpeg" alt="" class="reveal">
+      <img src="10.jpeg" alt="" class="reveal">
+      <img src="11.jpeg" alt="" class="reveal">
+      <img src="12.jpeg" alt="" class="reveal">
+    </div>
+  </section>
+
+  <section id="full-menu" class="reveal">
+    <h2>Our Menu</h2>
+    <p style="text-align:center; max-width:900px; margin:0 auto 40px; font-size:1.1rem; color:var(--gray);">
+      Freshly prepared, affordable dishes (₹15 – ₹499)
+    </p>
+    <div style="text-align:center; margin:30px 0;">
+      <a href="https://wa.me/+919883319801?text=Hello%20Green%20House%20Cafe!%20I%20want%20to%20place%20an%20order." class="btn btn-whatsapp">Order on WhatsApp</a>
+    </div>
+
+    <h3>Garden of Tea</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>KARAK TEA</h4><div class="price">₹15</div></div>
+      <div class="menu-item reveal"><h4>LEMON TEA</h4><div class="price">₹15</div></div>
+      <div class="menu-item reveal"><h4>MASALA TEA (MILK)</h4><div class="price">₹15</div></div>
+      <div class="menu-item reveal"><h4>LEMONGRASS TEA</h4><div class="price">₹15</div></div>
+      <div class="menu-item reveal"><h4>FLAVOUR TEA</h4><div class="price">₹15</div></div>
+      <div class="menu-item reveal"><h4>GH SPECIAL TEA</h4><div class="price">₹15</div></div>
+      <div class="menu-item reveal"><h4>TANDOORI TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>NALEN GURER CHA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>LAVENDER TEA</h4><div class="price">₹35</div></div>
+      <div class="menu-item reveal"><h4>MASALA TEA(MILK)</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>BHUNA SAKKAR CHAI</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>ROSE TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>MANGO TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>VANILLA TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>CHOCOLATE TEA</h4><div class="price">₹25</div></div>
+      <div class="menu-item reveal"><h4>CARAMEL TEA</h4><div class="price">₹25</div></div>
+      <div class="menu-item reveal"><h4>STRAWBERRY TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>GINGER HONEY TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>WHITE TEA</h4><div class="price">₹45</div></div>
+      <div class="menu-item reveal"><h4>LITCHI TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>CHAMOMILE TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>SAFFRON TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>HIBISCUS TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>FINEST LEAF TEA</h4><div class="price">₹20</div></div>
+      <div class="menu-item reveal"><h4>BLUE TEA</h4><div class="price">₹25</div></div>
+      <div class="menu-item reveal"><h4>GARDEN FLOWERS TEA</h4><div class="price">₹35</div></div>
+    </div>
+
+    <h3>Coffee</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>VANILLA LATTE</h4><div class="price">₹45</div></div>
+      <div class="menu-item reveal"><h4>PLAIN HOT COFFEE</h4><div class="price">₹35</div></div>
+      <div class="menu-item reveal"><h4>COLD COFFEE</h4><div class="price">₹70</div></div>
+      <div class="menu-item reveal"><h4>HOT CHOCOLATE</h4><div class="price">₹70</div></div>
+      <div class="menu-item reveal"><h4>CAFE LATTE</h4><div class="price">₹40</div></div>
+      <div class="menu-item reveal"><h4>AMERICANO(BLACK COFFEE)</h4><div class="price">₹30</div></div>
+      <div class="menu-item reveal"><h4>ROYAL CARAMEL MACHIATO</h4><div class="price">₹45</div></div>
+      <div class="menu-item reveal"><h4>CAPPUCCINO</h4><div class="price">₹40</div></div>
+      <div class="menu-item reveal"><h4>CARAMEL LATTE</h4><div class="price">₹45</div></div>
+      <div class="menu-item reveal"><h4>ESPRESSO(BLACK COFFEE 30ML SHOT)</h4><div class="price">₹20</div></div>
+    </div>
+
+    <h3>Mocktails</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>VIRGIN MOJITO</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>STRAWBERRY MOJITO</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>BLUE OCEAN</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>PINK LADY</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>MANGO MANIA</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>LEMON MINT COOLER</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>KIWI BLAST</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>MOHABBAT KI SARBAT</h4><div class="price">₹55</div></div>
+      <div class="menu-item reveal"><h4>MAGIC AAM PANNA</h4><div class="price">₹55</div></div>
+      <div class="menu-item reveal"><h4>DILLI KA FAMOUS SHAKANJI</h4><div class="price">₹55</div></div>
+      <div class="menu-item reveal"><h4>PINA COLADA</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>GINGER MINT TWIST</h4><div class="price">₹60</div></div>
+    </div>
+
+    <h3>Milk Shakes</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>CHOCOLATE MILK SHAKE</h4><div class="price">₹85</div></div>
+      <div class="menu-item reveal"><h4>VANILLA MILK SHAKE</h4><div class="price">₹85</div></div>
+      <div class="menu-item reveal"><h4>STRAWBERRY MILK SHAKE</h4><div class="price">₹85</div></div>
+      <div class="menu-item reveal"><h4>OREO MILK SHAKE</h4><div class="price">₹85</div></div>
+      <div class="menu-item reveal"><h4>BANANA MILK SHAKE</h4><div class="price">₹85</div></div>
+      <div class="menu-item reveal"><h4>ROOH AFZA MILK SHAKE</h4><div class="price">₹85</div></div>
+    </div>
+
+    <h3>Lassi</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>SWEET LASSI</h4><div class="price">₹55</div></div>
+      <div class="menu-item reveal"><h4>SALTED LASSI</h4><div class="price">₹55</div></div>
+      <div class="menu-item reveal"><h4>MANGO LASSI</h4><div class="price">₹55</div></div>
+      <div class="menu-item reveal"><h4>BADAAM LASSI</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>KESAR LASSI</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>STRAWBERRY LASSI</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>BANANA LASSI</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>DATES LASSI</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>ROOH AFZA LASSI</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>GH SPECIAL (DRYFRUIT) LASSI</h4><div class="price">₹80</div></div>
+    </div>
+
+    <h3>Mixed Beverages</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>LEMON ICED TEA</h4><div class="price">₹50</div></div>
+      <div class="menu-item reveal"><h4>PEACH ICED TEA</h4><div class="price">₹50</div></div>
+      <div class="menu-item reveal"><h4>STRAWBERRY ICED TEA</h4><div class="price">₹50</div></div>
+      <div class="menu-item reveal"><h4>MANGO ICED TEA</h4><div class="price">₹50</div></div>
+      <div class="menu-item reveal"><h4>FRESH LIME SODA SWEET/SALTED/MIX</h4><div class="price">₹45</div></div>
+      <div class="menu-item reveal"><h4>FRESH JUICES (SEASONAL)</h4><div class="price">₹30/40</div></div>
+      <div class="menu-item reveal"><h4>SOFT DRINKS/ MASALA</h4><div class="price">₹30/40</div></div>
+      <div class="menu-item reveal"><h4>MINERAL WATER</h4><div class="price">MRP</div></div>
+    </div>
+
+    <h3>Appetizer/Starter</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>CHICKEN LOLLYPOP 6PC</h4><div class="price">₹90/170</div></div>
+      <div class="menu-item reveal"><h4>MUSHROOM SALT N PEPPER</h4><div class="price">₹160</div></div>
+      <div class="menu-item reveal"><h4>CHILLI PANEER DRY/GRAVY 8PC</h4><div class="price">₹150/160</div></div>
+      <div class="menu-item reveal"><h4>CHILLI CHICKEN DRY/GRAVY 8PC</h4><div class="price">₹150/160</div></div>
+      <div class="menu-item reveal"><h4>MFC MURSHIDABAD FRIED CHICKEN 8PC</h4><div class="price">₹180</div></div>
+      <div class="menu-item reveal"><h4>VEG MANCHURIAN DRY/GRAVY</h4><div class="price">₹110/120</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN MANCHURIAN DRY/GRAVY</h4><div class="price">₹150/160</div></div>
+      <div class="menu-item reveal"><h4>CRISPY CHILLI BABYCORN</h4><div class="price">₹160</div></div>
+      <div class="menu-item reveal"><h4>DRUMS OF HEAVEN 6PC</h4><div class="price">₹180</div></div>
+      <div class="menu-item reveal"><h4>MEXICAN QUESADILLA (WRAP) VEG/CHICKEN</h4><div class="price">₹90/120</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN DRY FRY</h4><div class="price">₹160</div></div>
+      <div class="menu-item reveal"><h4>CRISPY CORN SALT N PEPPER</h4><div class="price">₹160</div></div>
+      <div class="menu-item reveal"><h4>CHEESE BALLS 8PC</h4><div class="price">₹160</div></div>
+      <div class="menu-item reveal"><h4>GARLIC CHEESE BREAD 8PC</h4><div class="price">₹140</div></div>
+      <div class="menu-item reveal"><h4>PANEER PAKODA 6PC</h4><div class="price">₹120</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN PAKODA 6PC</h4><div class="price">₹120</div></div>
+      <div class="menu-item reveal"><h4>LEMON CHICKEN/ORANGE CHICKEN 8PC</h4><div class="price">₹165/175</div></div>
+      <div class="menu-item reveal"><h4>FISH FINGER 6PC</h4><div class="price">₹170</div></div>
+      <div class="menu-item reveal"><h4>FISH FRY 2PC</h4><div class="price">₹140</div></div>
+    </div>
+
+    <h3>From Tandoor</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>CHICKEN TIKKA ANGARA 6PC</h4><div class="price">₹170</div></div>
+      <div class="menu-item reveal"><h4>BIRYANI RESHMI KABAB 6PC/SPECIAL</h4><div class="price">₹200</div></div>
+      <div class="menu-item reveal"><h4>TANGDI KABAB 4PC/PER PC</h4><div class="price">₹320</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN SEEKH KABAB</h4><div class="price">₹170</div></div>
+      <div class="menu-item reveal"><h4>PANEER TIKKA 6PC</h4><div class="price">₹170</div></div>
+      <div class="menu-item reveal"><h4>SAHI PANEER TIKKA 6PC</h4><div class="price">₹190</div></div>
+      <div class="menu-item reveal"><h4>TANDOORI CHICKEN FULL/PER PIECE</h4><div class="price">₹190/100</div></div>
+      <div class="menu-item reveal"><h4>TANDOORI PLATTER (2PC TANDOORI CHICKEN, 2PC TANGDI KEBAB, 4PC CHICKEN TIKKA WITH BIRYANI RICE) </h4><div class="price">₹499</div></div>
+    </div>
+
+    <h3>Soup/Salad/Papad & Raita</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>HOT AND SOUR SOUP VEG/CHICKEN</h4><div class="price">₹50/75</div></div>
+      <div class="menu-item reveal"><h4>MANCHOW SOUP VEG/CHICKEN</h4><div class="price">₹50/75</div></div>
+      <div class="menu-item reveal"><h4>SWEET CORN SOUP VEG/CHICKEN</h4><div class="price">₹50/75</div></div>
+      <div class="menu-item reveal"><h4>CREAM OF TOMATO SOUP</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>CLEAR SOUP VEG/CHICKEN</h4><div class="price">₹50/75</div></div>
+      <div class="menu-item reveal"><h4>FRUIT SALAD</h4><div class="price">₹80</div></div>
+      <div class="menu-item reveal"><h4>MIXED RAITA</h4><div class="price">₹40</div></div>
+      <div class="menu-item reveal"><h4>PINEAPPLE RAITA</h4><div class="price">₹50</div></div>
+      <div class="menu-item reveal"><h4>PLAIN CURD(DAK DOI)</h4><div class="price">₹40</div></div>
+      <div class="menu-item reveal"><h4>GARDEN GREEN SALAD</h4><div class="price">₹50</div></div>
+      <div class="menu-item reveal"><h4>CORN CARROT AND BELL PEPPER SALAD</h4><div class="price">₹90</div></div>
+      <div class="menu-item reveal"><h4>THAI SOM TAM SALAD(GREEN PAPAYA SALAD)</h4><div class="price">₹80</div></div>
+    </div>
+
+    <h3>Fried Rice & Noodles</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>FRIED RICE VEG/EGG/CHICKEN/MIXED</h4><div class="price">₹80/90/120/150</div></div>
+      <div class="menu-item reveal"><h4>TRIPLE SCHEWAN FRIED RICE VEG/EGG/CHICKEN/MIXED</h4><div class="price">₹80/90/130/160</div></div>
+      <div class="menu-item reveal"><h4>HAKKA NOODLES VEG/EGG/CHICKEN/MIXED</h4><div class="price">₹70/90/120/150</div></div>
+      <div class="menu-item reveal"><h4>TRIPLE SCHEWAN NOODLES VEG/EGG/CHICKEN/MIXED</h4><div class="price">₹80/90/130/160</div></div>
+      <div class="menu-item reveal"><h4>JAPANESE RAMEN NOODLES</h4><div class="price">₹150</div></div>
+      <div class="menu-item reveal"><h4>CHINESE PLATTER (SOUP/MOMO/CHILLI CHICKEN/FRIED RICE/NOODLES)</h4><div class="price">₹199</div></div>
+    </div>
+
+    <h3>Biryani & Pulao</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>VEG PULAO</h4><div class="price">₹120</div></div>
+      <div class="menu-item reveal"><h4>KASHMIRI SAHI PULAO</h4><div class="price">₹150</div></div>
+      <div class="menu-item reveal"><h4>JEERA RICE</h4><div class="price">₹70</div></div>
+      <div class="menu-item reveal"><h4>STEAMED RICE</h4><div class="price">₹50</div></div>
+      <div class="menu-item reveal"><h4>VEGETABLE BIRYANI</h4><div class="price">₹90</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN DUM BIRYANI</h4><div class="price">₹80/100</div></div>
+      <div class="menu-item reveal"><h4>EGG BIRYANI</h4><div class="price">₹70</div></div>
+      <div class="menu-item reveal"><h4>GREEN HOUSE SPECIAL BIRYANI</h4><div class="price">₹140</div></div>
+      <div class="menu-item reveal"><h4>PANEER BIRYANI</h4><div class="price">₹90</div></div>
+      <div class="menu-item reveal"><h4>MUTTON DUM BIRYANI</h4><div class="price">₹150/200</div></div>
+    </div>
+
+    <h3>Indian Gravy</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>CHICKEN KOSA 4PC</h4><div class="price">₹160</div></div>
+      <div class="menu-item reveal"><h4>MUTTON ROGAN JOSH 2PC</h4><div class="price">₹200</div></div>
+      <div class="menu-item reveal"><h4>GREEN HOUSE SPECIAL CHICKEN</h4><div class="price">₹350</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN TIKKA MASALA 6PC</h4><div class="price">₹190</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN REZALA 4PC</h4><div class="price">₹210</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN HANDI 4PC</h4><div class="price">₹190</div></div>
+      <div class="menu-item reveal"><h4>KADHAI CHICKEN 4PC</h4><div class="price">₹180</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN CHAAP 4PC</h4><div class="price">₹240</div></div>
+      <div class="menu-item reveal"><h4>BUTTER CHICKEN 4PC</h4><div class="price">₹190</div></div>
+    </div>
+
+    <h3>Little Italy (Pizza and Pasta)</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>MARGHERITA PIZZA</h4><div class="price">₹170</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN PIZZA</h4><div class="price">₹210</div></div>
+      <div class="menu-item reveal"><h4>VEGETABLE PIZZA</h4><div class="price">₹180</div></div>
+      <div class="menu-item reveal"><h4>GREEN HOUSE SPECIAL PIZZA</h4><div class="price">₹250</div></div>
+      <div class="menu-item reveal"><h4>EXTRA CHEESE/EXTRA CHICKEN</h4><div class="price">₹20/30</div></div>
+      <div class="menu-item reveal"><h4>PENNE PASTA WHITE SAUCE/WITH CHICKEN</h4><div class="price">₹150/180</div></div>
+      <div class="menu-item reveal"><h4>PENNE PASTA RED SAUCE/WITH CHICKEN</h4><div class="price">₹150/180</div></div>
+      <div class="menu-item reveal"><h4>PENNE PASTA MIX SAUCE/WITH CHICKEN</h4><div class="price">₹150/180</div></div>
+      <div class="menu-item reveal"><h4>MAC N CHEESE PASTA</h4><div class="price">₹160</div></div>
+    </div>
+
+    <h3>Sandwich & Burger</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>VEG GRILLED SANDWICH/ WITH CHEESE</h4><div class="price">₹40/50</div></div>
+      <div class="menu-item reveal"><h4>EGG SANDWICH/WITH CHEESE</h4><div class="price">₹50/60</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN SANDWICH/WITH CHEESE</h4><div class="price">₹60/70</div></div>
+      <div class="menu-item reveal"><h4>GREEN HOUSE SPECIAL SANDWICH</h4><div class="price">₹100</div></div>
+      <div class="menu-item reveal"><h4>VEGGIE BURGER/WITH CHEESE</h4><div class="price">₹70/80</div></div>
+      <div class="menu-item reveal"><h4>PANEER BURGER/WITH CHEESE</h4><div class="price">₹80/90</div></div>
+      <div class="menu-item reveal"><h4>GRILLED CHICKEN BURGER/ WITH CHEESE</h4><div class="price">₹90/100</div></div>
+      <div class="menu-item reveal"><h4>FRIED CHICKEN BURGER/WITH CHEESE</h4><div class="price">₹90/100</div></div>
+      <div class="menu-item reveal"><h4>GREEN HOUSE SPECIAL BURGER</h4><div class="price">₹130</div></div>
+      <div class="menu-item reveal"><h4>EXTRA CHEESE/EXTRA CHICKEN</h4><div class="price">₹20/30</div></div>
+    </div>
+
+    <h3>Rolls & Paratha</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>EGG ROLL/CHICKEN ROLL/ PANEER ROLL</h4><div class="price">₹40/60/60</div></div>
+      <div class="menu-item reveal"><h4>GREEN HOUSE SPECIAL ROLL</h4><div class="price">₹90</div></div>
+      <div class="menu-item reveal"><h4>KABAB ROLL</h4><div class="price">₹110</div></div>
+      <div class="menu-item reveal"><h4>LACHHA PARATHA/WITH BUTTER</h4><div class="price">₹30/35</div></div>
+      <div class="menu-item reveal"><h4>CHEESE PARATHA/WITH BUTTER</h4><div class="price">₹60/65</div></div>
+      <div class="menu-item reveal"><h4>ALOO PARATHA/WITH BUTTER</h4><div class="price">₹40/45</div></div>
+      <div class="menu-item reveal"><h4>PANEER PARATHA/WITH BUTTER</h4><div class="price">₹50/55</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN PARATHA/WITH BUTTER</h4><div class="price">₹60/65</div></div>
+      <div class="menu-item reveal"><h4>BADSAHI PARATHA (DRYFRUIT)/WITH BUTTER</h4><div class="price">₹80/85</div></div>
+    </div>
+
+    <h3>Tandoori Roti Naan</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>TANDOORI ROTI /WITH BUTTER</h4><div class="price">₹20/25</div></div>
+      <div class="menu-item reveal"><h4>TANDOORI NAAN/WITH BUTTER</h4><div class="price">₹40/45</div></div>
+      <div class="menu-item reveal"><h4>GARLIC NAAN/WITH BUTTER</h4><div class="price">₹45/50</div></div>
+      <div class="menu-item reveal"><h4>KULCHA/WITH BUTTER</h4><div class="price">₹35/40</div></div>
+      <div class="menu-item reveal"><h4>MASALA KULCHA</h4><div class="price">₹70</div></div>
+      <div class="menu-item reveal"><h4>CHEESE NAAN</h4><div class="price">₹60</div></div>
+    </div>
+
+    <h3>Momo</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>VEG MOMO 8PC</h4><div class="price">₹80</div></div>
+      <div class="menu-item reveal"><h4>PANEER MOMO 8PC</h4><div class="price">₹100</div></div>
+      <div class="menu-item reveal"><h4>CHICKEN MOMO 8PC</h4><div class="price">₹80</div></div>
+      <div class="menu-item reveal"><h4>CHEESE MOMO 8PC</h4><div class="price">₹140</div></div>
+      <div class="menu-item reveal"><h4>CHOCOLATE MOMO 8PC (PRE ORDER ONLY)</h4><div class="price">₹120</div></div>
+    </div>
+
+    <h3>Breakfast</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>BREAD TOAST WITH JAM & BUTTER</h4><div class="price">₹30</div></div>
+      <div class="menu-item reveal"><h4>BREAD WITH BUTTER & OMELETTE</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>OMELETTE</h4><div class="price">₹50</div></div>
+      <div class="menu-item reveal"><h4>NAAN PURI</h4><div class="price">₹</div></div>
+    </div>
+
+    <h3>Dessert</h3>
+    <div class="menu-grid">
+      <div class="menu-item reveal"><h4>PHIRNI</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>SAHI TUKDA</h4><div class="price">₹60</div></div>
+      <div class="menu-item reveal"><h4>GULAB JAMOON (2PC)</h4><div class="price">₹30</div></div>
+      <div class="menu-item reveal"><h4>HOT BROWNIE WITH CHOCOLATE SAUCE/VANILLA ICE CREAM</h4><div class="price">₹50/70</div></div>
+      <div class="menu-item reveal"><h4>DOUGHNUT</h4><div class="price">₹40</div></div>
+      <div class="menu-item reveal"><h4>CHOICE OF ICE CREAM (ASK FOR AVAILABILITY)</h4><div class="price">Ask</div></div>
+      <div class="menu-item reveal"><h4>BIRTHDAY CAKE (PRE ORDER ONLY)</h4><div class="price">Pre Order</div></div>
+    </div>
+
+    <div style="text-align:center; margin:50px 0;">
+      <a href="https://wa.me/YOUR_PHONE_NUMBER_HERE?text=Hello%20Green%20House%20Cafe!%20I%20want%20to%20place%20an%20order." class="btn btn-whatsapp">Order Now on WhatsApp</a>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <h2>Contact</h2>
+    <div class="contact-grid">
+      <div class="contact-card"><h3>Location</h3><p>Near Sagardighi Girls High School<br>Popara, Sagardighi<br>West Bengal 742226</p></div>
+      <div class="contact-card"><h3>Hours</h3><p>Open Daily<br>9:00 AM – 10:00 PM<br><span id="open-status" class="status-open">Checking...</span></p></div>
+      <div class="contact-card"><h3>Info</h3><p>Family Restaurant<br>Affordable Pricing</p></div>
+    </div>
+    <div style="text-align:center; margin-top:50px;">
+      <a href="https://www.google.com/maps/search/?api=1&query=Green+House+Cafe+Near+Sagardighi+Girls+High+School+Popara+Sagardighi+Murshidabad+West+Bengal+742226" class="btn">Get Directions</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Green House Cafe, Sagardighi</p>
+    <h6>Built By Arman Mia</h6>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        const icon = navToggle.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    });
+
+    // Open status IST
+    function updateOpenStatus() {
+      const now = new Date();
+      const istOffset = 5.5 * 60 * 60 * 1000;
+      const istTime = new Date(now.getTime() + istOffset);
+      const hours = istTime.getUTCHours();
+      const isOpen = hours >= 9 && hours < 22;
+      const statusElement = document.getElementById('open-status');
+      statusElement.textContent = isOpen ? 'Currently Open' : 'Currently Closed';
+      statusElement.style.color = isOpen ? 'var(--primary)' : '#dc2626';
+    }
+    updateOpenStatus();
+    setInterval(updateOpenStatus, 300000);
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if(target){
+            target.scrollIntoView({ behavior: 'smooth' });
+            navLinks.classList.remove('active');
+            const icon = navToggle.querySelector('i');
+            if(icon.classList.contains('fa-times')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+      });
+    });
+
+    // Scroll Reveal Animation
+    function reveal() {
+      var reveals = document.querySelectorAll(".reveal");
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 50;
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        }
+      }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal(); // Trigger on load
+  </script>
+</body>
+</html>
